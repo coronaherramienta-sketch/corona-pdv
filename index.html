@@ -298,9 +298,6 @@
         <label>Campaña</label>
         <select name="subcategoria" id="selectSubcategoria">
           <option value="">Seleccionar campaña…</option>
-          <option>Cuna para grandes formatos</option>
-          <option>Habitart decorados</option>
-          <option>Habitart pisos</option>
         </select>
       </div>
       <div class="field">
@@ -520,17 +517,34 @@ var style = document.createElement('style');
 style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
 document.head.appendChild(style);
 
-// ── 5. LÓGICA SUBCATEGORÍA REVESTIMIENTO ────────────────────────────────────
+// ── 5. LÓGICA CAMPAÑA POR NEGOCIO ───────────────────────────────────────────
+var campanasPorNegocio = {
+  'Baños y Cocinas':      [],
+  'Revestimiento':        ['Cuna para grandes formatos','Habitart decorados','Habitart pisos'],
+  'Materiales y Pinturas':[]
+};
+
 document.getElementById('selectCategoria').addEventListener('change', function() {
-  var fieldSub = document.getElementById('fieldSubcategoria');
+  var fieldSub  = document.getElementById('fieldSubcategoria');
   var selectSub = document.getElementById('selectSubcategoria');
-  if (this.value === 'Revestimiento') {
+  var negocio   = this.value;
+  var opciones  = campanasPorNegocio[negocio] || [];
+
+  // Reiniciar select
+  selectSub.innerHTML = '<option value="">Seleccionar campaña…</option>';
+  selectSub.required  = false;
+  selectSub.value     = '';
+
+  if (negocio && opciones.length > 0) {
+    opciones.forEach(function(op) {
+      var opt = document.createElement('option');
+      opt.value = op; opt.textContent = op;
+      selectSub.appendChild(opt);
+    });
     fieldSub.style.display = '';
     selectSub.required = true;
   } else {
     fieldSub.style.display = 'none';
-    selectSub.required = false;
-    selectSub.value = '';
   }
 });
 
